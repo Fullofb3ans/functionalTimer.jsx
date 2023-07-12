@@ -5,7 +5,7 @@ class App extends Component{
     count: 0,
     start: false,
   };
-
+  
   componentDidMount(){
     this.setState(()=> ({count: JSON.parse(localStorage.getItem('time')) || 0}));
   }
@@ -14,8 +14,6 @@ class App extends Component{
     this.addInLs = localStorage.setItem('time', this.state.count);
   }
 
-
-  
   start = () => {  
   this.timer = setInterval(() => {
     this.setState((prevState)=> ({count: prevState.count+1}));
@@ -38,20 +36,28 @@ class App extends Component{
 
   render(){
     return(
-      <div className ='App'>
-        <div>
-          {this.state.count}
-        </div>
-          <div>
+      <div style = {{textAlign: 'center', fontSize: 'X-large'}} className ='App'>
+        <h1>Timer</h1>
+        <div>{this.state.count}</div>
+
+          <div style = {{
+            margin: '3%',
+            display: 'flex',
+            flexWrap: 'wrap',
+            flexdirection: 'row',
+            justifyContent: 'center',
+            gap: '6%'
+            }}>
+
             {
             this.state.start == false 
             ? 
-          <button onClick={this.start}>Run</button> 
+          <button style = {{width: '10%', padding: '1%'}} onClick={this.start}>Run</button> 
             :
-          <button onClick={this.stop}>Stop</button>
+          <button style = {{width: '10%', padding: '1%'}} onClick={this.stop}>Stop</button>
             }
+          <button style = {{width: '10%', padding: '1%'}} onClick={this.reset}>Reset</button>
           </div>
-          <button onClick={this.reset}>Reset</button>
         </div>
     );
   }
