@@ -1,66 +1,55 @@
-import React, {Component} from 'react';
+import React, { Component, useState } from 'react';
 
-class App extends Component{ 
-  state={
-    count: 0,
-    start: false,
-  };
-  
-  componentDidMount(){
-    this.setState(()=> ({count: JSON.parse(localStorage.getItem('time')) || 0}));
-  }
-  
-  componentDidUpdate(){
-    this.addInLs = localStorage.setItem('time', this.state.count);
-  }
+let timer;
+export default function App() {
+	const [count, setCount] = useState(0);
+	const [start, setStart] = useState(false);
 
-  start = () => {  
-  this.timer = setInterval(() => {
-    this.setState((prevState)=> ({count: prevState.count+1}));
-  }, 1000)
-    this.setState((prevState)=> ({start: true}));
-  }
+	let startTimer = () => {
+		setStart(true);
+		return (timer = setInterval(() => {
+			setCount((count) => count + 1);
+		}, 1000));
+	};
 
-  stop = () => {
-    this.setState((prevState)=> ({start: false}));
-    clearInterval(this.timer);
-  }
+	let stopTimer = () => {
+		setStart(false);
+		clearInterval(timer);
+	};
 
-  componentWillUnmount(){
-    this.reset = () => {
-      this.setState((prevState)=> ({start: false}));
-      clearInterval(this.timer);
-      this.setState((prevState)=> ({count: 0}));           
-    }   
-  }
+	let reset = () => {
+		setStart(false);
+		setCount(0);
+		clearInterval(timer);
+	};
 
-  render(){
-    return(
-      <div style = {{textAlign: 'center', fontSize: 'X-large'}} className ='App'>
-        <h1>Timer</h1>
-        <div>{this.state.count}</div>
+	return (
+		<div style={{ textAlign: 'center', fontSize: 'X-large' }} className="App">
+			<h1>Timer</h1>
+			<div>{count}</div>
 
-          <div style = {{
-            margin: '3%',
-            display: 'flex',
-            flexWrap: 'wrap',
-            flexdirection: 'row',
-            justifyContent: 'center',
-            gap: '6%'
-            }}>
-
-            {
-            this.state.start == false 
-            ? 
-          <button style = {{width: '10%', padding: '1%'}} onClick={this.start}>Run</button> 
-            :
-          <button style = {{width: '10%', padding: '1%'}} onClick={this.stop}>Stop</button>
-            }
-          <button style = {{width: '10%', padding: '1%'}} onClick={this.reset}>Reset</button>
-          </div>
-        </div>
-    );
-  }
+			<div
+				style={{
+					margin: '3%',
+					display: 'flex',
+					flexWrap: 'wrap',
+					flexdirection: 'row',
+					justifyContent: 'center',
+					gap: '6%',
+				}}>
+				{start == false ? (
+					<button style={{ width: '10%', padding: '1%' }} onClick={startTimer}>
+						Run
+					</button>
+				) : (
+					<button style={{ width: '10%', padding: '1%' }} onClick={stopTimer}>
+						Stop
+					</button>
+				)}
+				<button style={{ width: '10%', padding: '1%' }} onClick={reset}>
+					Reset
+				</button>
+			</div>
+		</div>
+	);
 }
-  
-  export default App; 
